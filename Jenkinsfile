@@ -17,7 +17,7 @@ pipeline {
             }
 
             steps {
-                script '''
+                sh '''
                     docker build -t ashayalmighty/website:${version} .
                     docker save -o website-${version}.tar ashayalmighty/website:${version}
                 '''
@@ -30,7 +30,7 @@ pipeline {
             }
 
             steps {
-                script '''
+                sh '''
                     docker build -t ashayalmighty/website:${version} .
                     docker save -o website-${version}.tar ashayalmighty/website:${version}
                     rsync -azPpr -e ssh website-${version}.tar ${TestServer}:/home/ubuntu/
@@ -44,7 +44,7 @@ pipeline {
             }
 
             steps {
-                script '''
+                sh '''
                     cd /home/ubuntu/
                     docker load -i website-${version}.tar
                     echo $DockerCred_PSW | sudo docker login -u $DockerCred_USR --password-stdin
@@ -67,7 +67,7 @@ pipeline {
             }
 
             steps {
-                script '''
+                sh '''
                     rsync -azPpr -e ssh website-${version}.tar ${ProductionServer}:/home/ubuntu/
                 '''
             }
@@ -85,7 +85,7 @@ pipeline {
             }
 
             steps {
-                script '''
+                sh '''
                     cd /home/ubuntu/
                     docker load -i website-${version}.tar
                     docker rm -f website
