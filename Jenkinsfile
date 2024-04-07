@@ -73,7 +73,7 @@ pipeline {
 
         stage('Publish Website') {
             agent {
-                label 'publish'
+                label 'ProductionServer'
             }
 
             when {
