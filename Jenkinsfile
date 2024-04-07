@@ -31,8 +31,6 @@ pipeline {
 
             steps {
                 sh '''
-                    sudo docker build -t ashayalmighty/website:${version} .
-                    sudo docker save -o website-${version}.tar ashayalmighty/website:${version}
                     rsync -azPpr -e ssh website-${version}.tar ${TestServer}:/home/ubuntu/
                 '''
             }
