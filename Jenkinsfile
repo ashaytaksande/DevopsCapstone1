@@ -18,8 +18,8 @@ pipeline {
 
             steps {
                 sh '''
-                    docker build -t ashayalmighty/website:${version} .
-                    docker save -o website-${version}.tar ashayalmighty/website:${version}
+                    sudo docker build -t ashayalmighty/website:${version} .
+                    sudo docker save -o website-${version}.tar ashayalmighty/website:${version}
                 '''
             }
         }
@@ -31,8 +31,8 @@ pipeline {
 
             steps {
                 sh '''
-                    docker build -t ashayalmighty/website:${version} .
-                    docker save -o website-${version}.tar ashayalmighty/website:${version}
+                    sudo docker build -t ashayalmighty/website:${version} .
+                    sudo docker save -o website-${version}.tar ashayalmighty/website:${version}
                     rsync -azPpr -e ssh website-${version}.tar ${TestServer}:/home/ubuntu/
                 '''
             }
@@ -46,9 +46,9 @@ pipeline {
             steps {
                 sh '''
                     cd /home/ubuntu/
-                    docker load -i website-${version}.tar
+                    sudo docker load -i website-${version}.tar
                     echo $DockerCred_PSW | sudo docker login -u $DockerCred_USR --password-stdin
-                    docker push ashayalmighty/website:${version}
+                    sudo docker push ashayalmighty/website:${version}
                     echo 'Perform tests'
                     echo 'tests sucessful'
                 '''
@@ -87,9 +87,9 @@ pipeline {
             steps {
                 sh '''
                     cd /home/ubuntu/
-                    docker load -i website-${version}.tar
-                    docker rm -f website
-                    docker run -d -p 82:80 --name website ashayalmighty/website:${version}
+                    sudo docker load -i website-${version}.tar
+                    sudo docker rm -f website
+                    sudo docker run -d -p 82:80 --name website ashayalmighty/website:${version}
                 '''
             }
         }
