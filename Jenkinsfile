@@ -46,7 +46,7 @@ pipeline {
                 echo 'tests sucessful'
                 '''
         } 
-            stage('If commit is made to master branch, push the image from TestServer to Production server after passing all the tests') {
+        stage('If commit is made to master branch, push the image from TestServer to Production server after passing all the tests') {
             agent {
                 label 'TestServer'
             }
@@ -60,24 +60,24 @@ pipeline {
                 rsync -azPpr -e ssh website-${version}.tar ${ProductionServer}:/home/ubuntu/
                 '''
             }
+        }
+        stage('publish website') {
+            agent {
+                label 'ProductionServer'
             }
-            stage('publish website') {
-                agent {
-                    label 'publish'
-                }
-                when {
-                    expression {
-                        branchName == 'master'
-                    }
-                }            
-                steps {
-                    sh '''
-                    cd /home/ubuntu/
-                    docker load -i website-${version}.tar
-                    docker rm -f website
-                    docker run -d -p 82:80 --name website ashayalmighty/website:${version}
-                    '''
-                }
+            when {
+               expression {
+                   branchName == 'master'
+               }
+            }            
+            steps {
+                sh '''
+                cd /home/ubuntu/
+                docker load -i website-${version}.tar
+                docker rm -f website
+                docker run -d -p 82:80 --name website ashayalmighty/website:${version}
+                '''
             }
+        }
     }
 }
