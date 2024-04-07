@@ -11,7 +11,7 @@ pipeline {
     }
 
     stages {
-        stage('Job1: Build - If commit is made to develop branch, just build the product, do not publish.') {
+        stage('Job1: Build - Build when new code is pushed to the repo.') {
             agent {
                 label 'BuildServer'
             }
