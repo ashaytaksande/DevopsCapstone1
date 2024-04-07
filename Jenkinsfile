@@ -66,7 +66,7 @@ pipeline {
 
             steps {
                 sh '''
-                    sudo rsync -azPpr -e ssh website-${version}.tar ${ProductionServer}:/home/ubuntu/
+                    sudo rsync -azPpr -e ssh /home/ubuntu/website-${version}.tar ${ProductionServer}:/home/ubuntu/
                 '''
             }
         }
